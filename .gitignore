@@ -1,3 +1,5 @@
 .evn
 node_modules
 logic.md
+Dockerfile
+docker-compose.yml
