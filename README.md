@@ -1,0 +1,1 @@
+# Domain Yönetimi için Rest API
