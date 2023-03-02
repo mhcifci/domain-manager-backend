@@ -6,10 +6,11 @@ const {
   Create,
 } = require("../controllers/DomainsCategory");
 const router = express.Router();
+const authMiddleware = require("../middlewares/auth.middleware");
 
-router.get("/", GetAll);
-router.get("/get/:id", Get);
-router.put("/:id", Update);
-router.post("/", Create);
+router.get("/", authMiddleware, GetAll);
+router.get("/get/:id", authMiddleware, Get);
+router.put("/:id", authMiddleware, Update);
+router.post("/", authMiddleware, Create);
 
 module.exports = router;
