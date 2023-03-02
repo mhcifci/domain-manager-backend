@@ -5,7 +5,7 @@ const rateLimit = require("express-rate-limit");
 // IP başına 5 dakika içerisinde maksimum 10 istek atabilir
 const rateLimitMiddleware = rateLimit({
   windowMs: 5 * 60 * 1000, // 15 dakika
-  max: 10, // IP başına maksimum 100 istek
+  max: 10, // IP başına maksimum 10 istek
   message: {
     status: 429,
     error: "Too many requests from this IP, please try again later.",
