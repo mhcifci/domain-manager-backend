@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../index");
 
 const User = sequelize.define(
-  "user",
+  "users",
   {
     email: {
       type: DataTypes.STRING,
@@ -11,17 +11,9 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    // cretated_at: {
-    //   type: DataTypes.TIME,
-    //   allowNull: false,
-    // },
-    // updated_at: {
-    //   type: DataTypes.TIME,
-    //   allowNull: true,
-    // },
+    }
   },
-  { timestamps: true, underscored: true }
+  { timestamps: true, underscored: true, tableName: "users" }
 );
 
 module.exports = User;
