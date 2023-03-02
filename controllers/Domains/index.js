@@ -2,10 +2,12 @@
 const { Domains, UnusedDomains } = require("../../models/Domains"); // Domains Model
 const response = require("../../utils/response");
 
+const ModelName = Domains;
+
 // @ GET All Domains
 const GetAll = async (req, res) => {
   try {
-    const data = await Domains.findAll();
+    const data = await ModelName.findAll();
     response.success(res, data, "success");
   } catch (err) {
     console.log(err);
@@ -15,7 +17,7 @@ const GetAll = async (req, res) => {
 
 const Get = async (req, res) => {
   try {
-    const data = await Domains.findOne({
+    const data = await ModelName.findOne({
       where: { id: req.params.id },
     });
 
@@ -34,7 +36,7 @@ const Get = async (req, res) => {
 const Update = async (req, res) => {
   try {
     // Domaini bul
-    const domain = await Domains.findOne({
+    const domain = await ModelName.findOne({
       where: { id: req.params.id },
     });
     // Domain yoksa?
@@ -42,13 +44,13 @@ const Update = async (req, res) => {
       return response.notFound(res, "Veri bulunamadı.");
     }
     await domain.update({
-      domain: req.body.domain || Domains.domain,
-      category: req.body.category || Domains.domain,
-      host: req.body.host || Domains.host,
-      tags: req.body.tags || Domains.tags,
-      is_banned: req.body.is_banned || Domains.is_banned,
-      is_active: req.body.is_active || Domains.is_active,
-      added_by: req.body.added_by || Domains.added_by,
+      domain: req.body.domain || ModelName.domain,
+      category: req.body.category || ModelName.domain,
+      host: req.body.host || ModelName.host,
+      tags: req.body.tags || ModelName.tags,
+      is_banned: req.body.is_banned || ModelName.is_banned,
+      is_active: req.body.is_active || ModelName.is_active,
+      added_by: req.body.added_by || ModelName.added_by,
     });
     return response.success(res, null, "success");
   } catch (err) {
@@ -61,7 +63,7 @@ const Update = async (req, res) => {
 const Create = async (req, res) => {
   try {
     // Domaini var mı?
-    const domain = await Domains.findOne({
+    const domain = await ModelName.findOne({
       where: { domain: req.body.domain },
     });
 
@@ -69,7 +71,7 @@ const Create = async (req, res) => {
     if (domain) {
       return response.notFound(res, "Daha önce benzer bir kayıt var.");
     }
-    await Domains.create({
+    await ModelName.create({
       domain: req.body.domain,
       category: req.body.category,
       host: req.body.host,
@@ -90,6 +92,7 @@ const Create = async (req, res) => {
 const GetAllUnusedDomains = async (req, res) => {
   try {
     const data = await UnusedDomains.findAll();
+    console.log(data)
     response.success(res, data, "success");
   } catch (err) {
     console.log(err);

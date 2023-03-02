@@ -69,7 +69,7 @@ const UnusedDomains = sequelize.define(
       allowNull: false,
     },
   },
-  { timestamps: true, underscored: true, tableName: "domains" }
+  { timestamps: true, underscored: true, tableName: "unused_domains" }
 );
 
 module.exports = { Domains, UnusedDomains };
