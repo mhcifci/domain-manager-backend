@@ -1,14 +1,12 @@
 const express = require("express");
-const {
-  GetAll, Update, Create, Get
-} = require("../controllers/DomainsNote");
+const { GetAll, Update, Create, Get } = require("../controllers/DomainsNote");
 const router = express.Router();
 
 router.get("/", GetAll);
 router.get("/get/:id", Get);
-// Uptade domain
+// Uptade
 router.put("/:id", Update);
-// Create domain
+// Create
 router.post("/", Create);
 
 module.exports = router;
