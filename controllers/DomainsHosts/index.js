@@ -32,7 +32,59 @@ const Get = async (req, res) => {
   }
 };
 
+// @ PUT Update
+const Update = async (req, res) => {
+  try {
+    // Host bul
+    const host = await ModelName.findOne({
+      where: { id: req.params.id },
+    });
+    // Kategori yoksa?
+    if (!host) {
+      return response.notFound(res, "Veri bulunamadı.");
+    }
+    await host.update({
+      title: req.body.title || ModelName.title,
+      ip: req.body.ip || ModelName.ip,
+      url: req.body.url || ModelName.url,
+      username: req.body.username || ModelName.username,
+      password: req.body.password || ModelName.password,
+    });
+    return response.success(res, null, "success");
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+
+// @ POST Create
+const Create = async (req, res) => {
+  try {
+    // Aynı title var mı?
+    const data = await ModelName.findOne({
+      where: { title: req.body.title },
+    });
+
+    // Title yoksa?
+    if (data) {
+      return response.conflict(res, "Daha önce benzer bir kayıt var.");
+    }
+    await ModelName.create({
+      title: req.body.title,
+      ip: req.body.ip,
+      url: req.body.url || null,
+      username: req.body.username || null,
+      password: req.body.password || null,
+    });
+    return response.success(res, null, "success");
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
 module.exports = {
   GetAll,
-  Get
+  Get,
+  Update,
+  Create,
 };
