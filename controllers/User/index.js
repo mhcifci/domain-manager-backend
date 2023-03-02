@@ -11,7 +11,7 @@ const GetAll = async (req, res) => {
     const data = await ModelName.findAll();
     response.success(res, data, "success");
   } catch (err) {
-    console.log(err);
+    return;
   }
 };
 
@@ -27,7 +27,6 @@ const Get = async (req, res) => {
 
     return response.success(res, data, "success");
   } catch (err) {
-    console.error(err);
     return res.status(500).json({ message: "Bir hata oluştu" });
   }
 };
@@ -42,7 +41,6 @@ const Update = async (req, res) => {
     if (!data) {
       return response.notFound(res);
     }
-    console.log(data);
 
     if (req.body.password) {
       var hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -51,10 +49,8 @@ const Update = async (req, res) => {
       password: hashedPassword || ModelName.password,
       email: req.body.email || ModelName.email,
     });
-    console.log(result);
     return response.success(res, null, "success");
   } catch (err) {
-    console.log(err);
     return;
   }
 };
@@ -77,7 +73,6 @@ const Create = async (req, res) => {
     });
     return response.success(res, null, "success");
   } catch (err) {
-    console.log(err, " err stack");
     return response.badRequest(res, { errors: err });
   }
 };
