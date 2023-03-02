@@ -67,7 +67,7 @@ const Create = async (req, res) => {
 
     // Title yoksa?
     if (data) {
-      return response.conflict(res, "Daha önce benzer bir kayıt var.");
+      return response.conflict(res);
     }
     await ModelName.create({
       title: req.body.title,
