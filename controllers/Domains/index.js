@@ -123,7 +123,7 @@ const CheckDomainIsBanned = async (req, res) => {
         }
       );
     });
-    const saveLog = await sequelize.query(
+    await sequelize.query(
       "INSERT into domain_control_log SET match_domain = ?, result = ?",
       {
         replacements: [
@@ -136,7 +136,6 @@ const CheckDomainIsBanned = async (req, res) => {
         tableName: "domain_control_log",
       }
     );
-
     response.success(
       res,
       bannedDomainList.length > 0 ? bannedDomainList : null,
