@@ -110,9 +110,8 @@ const CheckDomainIsBanned = async (req, res) => {
     });
     const bannedDomainList = [];
     for (let i = 0; i < domainList.length; i++) {
-      const arananKelime = domainList[i].domain;
-      if (aranacaklar.some((url) => url.includes(arananKelime))) {
-        bannedDomainList.push(arananKelime);
+      if (aranacaklar.some((url) => url.includes(domainList[i].domain))) {
+        bannedDomainList.push(domainList[i].domain);
       }
     }
     bannedDomainList.forEach(async (domain) => {
@@ -124,8 +123,25 @@ const CheckDomainIsBanned = async (req, res) => {
         }
       );
     });
+    const saveLog = await sequelize.query(
+      "INSERT into domain_control_log SET match_domain = ?, result = ?",
+      {
+        replacements: [
+          bannedDomainList.toString() ? bannedDomainList.toString() : null,
+          bannedDomains.status,
+        ],
+        type: QueryTypes.INSERT,
+        timestamps: true,
+        underscored: true,
+        tableName: "domain_control_log",
+      }
+    );
 
-    response.success(res, bannedDomainList, "success");
+    response.success(
+      res,
+      bannedDomainList.length > 0 ? bannedDomainList : null,
+      "success"
+    );
   } catch (err) {
     console.log(err);
     return;
