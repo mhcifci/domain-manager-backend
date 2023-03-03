@@ -1,6 +1,8 @@
 // Models
-const { Domains, UnusedDomains } = require("../../models/Domains"); // Domains Model
+const { Domains, UnusedDomains, sequelize } = require("../../models/Domains"); // Domains Model
 const response = require("../../utils/response");
+const axios = require("axios");
+const { QueryTypes } = require("sequelize");
 
 const ModelName = Domains;
 
@@ -95,10 +97,46 @@ const GetAllUnusedDomains = async (req, res) => {
   }
 };
 
+// Check and update domains
+const CheckDomainIsBanned = async (req, res) => {
+  try {
+    const bannedDomains = await axios.get(process.env.CHECK_DOMAIN_URL);
+    const aranacaklar = bannedDomains.data.data; // Array
+    const domainList = await ModelName.findAll({
+      where: {
+        is_active: 1,
+        is_banned: 0,
+      },
+    });
+    const bannedDomainList = [];
+    for (let i = 0; i < domainList.length; i++) {
+      const arananKelime = domainList[i].domain;
+      if (aranacaklar.some((url) => url.includes(arananKelime))) {
+        bannedDomainList.push(arananKelime);
+      }
+    }
+    bannedDomainList.forEach(async (domain) => {
+      await sequelize.query(
+        "UPDATE domains SET is_banned = 1 WHERE domain = ?",
+        {
+          replacements: [domain],
+          type: QueryTypes.UPDATE,
+        }
+      );
+    });
+
+    response.success(res, bannedDomainList, "success");
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+
 module.exports = {
   GetAll,
   Get,
-  GetAllUnusedDomains,
   Update,
   Create,
+  GetAllUnusedDomains,
+  CheckDomainIsBanned,
 };

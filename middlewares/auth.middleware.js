@@ -9,7 +9,7 @@ const authMiddleware = async (req, res, next) => {
       process.env.JWT_SECRET
     );
     const user = await User.findOne({ where: { email: decodedToken.email } });
-    console.log(user);
+
     if (!user) {
       throw new Error();
     }
