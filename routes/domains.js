@@ -5,6 +5,7 @@ const {
   Create,
   Get,
   GetAllUnusedDomains,
+  CheckDomainIsBanned,
 } = require("../controllers/Domains");
 const router = express.Router();
 const authMiddleware = require("../middlewares/auth.middleware");
@@ -15,6 +16,9 @@ router.put("/:id", authMiddleware, Update);
 router.post("/", authMiddleware, Create);
 
 // Unused views
-router.get("/unused", GetAllUnusedDomains);
+router.get("/unused", authMiddleware, GetAllUnusedDomains);
+
+// Check is banned?
+router.get("/check", CheckDomainIsBanned);
 
 module.exports = router;

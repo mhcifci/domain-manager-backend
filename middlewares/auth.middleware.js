@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../models/User");
+const User = require("../models/User");
 const response = require("../utils/response");
 
 const authMiddleware = async (req, res, next) => {
@@ -8,7 +8,8 @@ const authMiddleware = async (req, res, next) => {
       req.headers.authorization.split(" ")[1],
       process.env.JWT_SECRET
     );
-    const user = await User.findByPk(decodedToken.userId);
+    const user = await User.findOne({ where: { email: decodedToken.email } });
+
     if (!user) {
       throw new Error();
     }
