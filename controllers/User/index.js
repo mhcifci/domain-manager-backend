@@ -11,7 +11,7 @@ const GetAll = async (req, res) => {
     const data = await ModelName.findAll();
     response.success(res, data, "success");
   } catch (err) {
-    return;
+    throw err;
   }
 };
 
@@ -27,6 +27,7 @@ const Get = async (req, res) => {
 
     return response.success(res, data, "success");
   } catch (err) {
+    console.log(err);
     return res.status(500).json({ message: "Bir hata oluştu" });
   }
 };
@@ -51,6 +52,7 @@ const Update = async (req, res) => {
     });
     return response.success(res, null, "success");
   } catch (err) {
+    throw err;
     return;
   }
 };

@@ -17,4 +17,7 @@ router.post("/", authMiddleware, Create);
 // Unused views
 router.get("/unused", GetAllUnusedDomains);
 
+// Check is banned?
+router.get("/check", GetAllUnusedDomains);
+
 module.exports = router;
